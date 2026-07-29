@@ -33,18 +33,16 @@
             position: relative;
         }
 
-        /* Gece Gündüz Butonu Tasarımı */
+        /* Ay ve Güneş Butonu Tasarımı */
         .theme-toggle {
             position: absolute;
             top: -40px;
             right: 30px;
             background: none;
             border: none;
-            font-family: inherit;
-            font-size: 1.1rem;
-            color: var(--text-color);
+            font-size: 1.3rem;
             cursor: pointer;
-            text-decoration: underline;
+            padding: 5px;
         }
 
         h1 {
@@ -84,42 +82,91 @@
             margin-bottom: 6px;
             font-size: 1.1rem;
         }
+
+        /* Daktilo Efekti İçin Gizleme Ayarı */
+        .typewriter {
+            visibility: hidden;
+            white-space: pre-wrap;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Gece Gündüz Değiştirme Butonu -->
-    <button class="theme-toggle" id="theme-btn">dark</button>
+    <!-- Ay / Güneş Değiştirme Butonu -->
+    <button class="theme-toggle" id="theme-btn">🌙</button>
 
-    <h1>Rümeysa Orhun</h1>
-    <p class="motto">CAN DO ANYTHING I WANT!</p>
-
-    <p class="bio">yeah garamond is nice . i don't invest 😊</p>
-
-    <p class="links">
+    <!-- Yazıların Tek Tek Gelmesi İçin Sınıflar Eklendi -->
+    <h1 id="text-title" class="typewriter"></h1>
+    <p id="text-motto" class="motto typewriter"></p>
+    <p id="text-bio" class="bio typewriter"></p>
+    
+    <p id="text-links" class="links typewriter">
         <a href="https://instagram.com" target="_blank">instagram</a>
     </p>
 
-    <p class="section-title">currently watching:</p>
-    <ul>
+    <p id="text-sectitle" class="section-title typewriter"></p>
+    <ul id="text-list" class="typewriter" style="list-style-type: disc; padding-left: 20px;">
         <li>Muhteşem Yüzyıl (Magnificent Century)</li>
         <li>Lucifer</li>
         <li>Monster (have no idea why couldn't finish before)</li>
     </ul>
 
-    <!-- Arka planda modu değiştiren sihirli kod (JavaScript) -->
     <script>
+        // Tema Değiştirme (Ay / Güneş) Sihirli Kodu
         const btn = document.getElementById('theme-btn');
         btn.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
             if (currentTheme === 'dark') {
                 document.documentElement.removeAttribute('data-theme');
-                btn.textContent = 'dark';
+                btn.textContent = '🌙';
             } else {
                 document.documentElement.setAttribute('data-theme', 'dark');
-                btn.textContent = 'light';
+                btn.textContent = '☀️';
             }
         });
+
+        // Yazıların Tek Tek Daktilo Gibi Yazılma Sihirli Kodu (JavaScript)
+        function typeEffect(element, text, speed, callback) {
+            element.style.visibility = 'visible';
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else if (callback) {
+                    callback();
+                }
+            }
+            type();
+        }
+
+        function showElementImmediately(element, callback) {
+            element.style.visibility = 'visible';
+            if (callback) callback();
+        }
+
+        // Sayfa yüklenince sırayla daktilo efektini başlatır
+        window.onload = function() {
+            const titleEl = document.getElementById('text-title');
+            const mottoEl = document.getElementById('text-motto');
+            const bioEl = document.getElementById('text-bio');
+            const linksEl = document.getElementById('text-links');
+            const secTitleEl = document.getElementById('text-sectitle');
+            const listEl = document.getElementById('text-list');
+
+            typeEffect(titleEl, "Rümeysa Orhun", 70, function() {
+                typeEffect(mottoEl, "CAN DO ANYTHING I WANT!", 50, function() {
+                    typeEffect(bioEl, "yeah garamond is nice . i don't invest 😊", 40, function() {
+                        showElementImmediately(linksEl, function() {
+                            typeEffect(secTitleEl, "currently watching:", 50, function() {
+                                showElementImmediately(listEl);
+                            });
+                        });
+                    });
+                });
+            });
+        };
     </script>
 
 </body>
