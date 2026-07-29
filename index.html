@@ -33,7 +33,7 @@
             position: relative;
         }
 
-        /* Ay ve Güneş Butonu Tasarımı */
+        /* Ay / Güneş Butonu Tasarımı */
         .theme-toggle {
             position: absolute;
             top: -40px;
@@ -95,7 +95,6 @@
     <!-- Ay / Güneş Değiştirme Butonu -->
     <button class="theme-toggle" id="theme-btn">🌙</button>
 
-    <!-- Yazıların Tek Tek Gelmesi İçin Sınıflar Eklendi -->
     <h1 id="text-title" class="typewriter"></h1>
     <p id="text-motto" class="motto typewriter"></p>
     <p id="text-bio" class="bio typewriter"></p>
@@ -105,14 +104,15 @@
     </p>
 
     <p id="text-sectitle" class="section-title typewriter"></p>
-    <ul id="text-list" class="typewriter" style="list-style-type: disc; padding-left: 20px;">
-        <li>Muhteşem Yüzyıl (Magnificent Century)</li>
-        <li>Lucifer</li>
-        <li>Monster (have no idea why couldn't finish before)</li>
+    
+    <ul id="text-list" style="list-style-type: disc; padding-left: 20px;">
+        <li id="show-1" class="typewriter"></li>
+        <li id="show-2" class="typewriter"></li>
+        <li id="show-3" class="typewriter"></li>
     </ul>
 
     <script>
-        // Tema Değiştirme (Ay / Güneş) Sihirli Kodu
+        // Tema Değiştirme (Ay / Güneş) Kodu
         const btn = document.getElementById('theme-btn');
         btn.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
@@ -125,7 +125,7 @@
             }
         });
 
-        // Yazıların Tek Tek Daktilo Gibi Yazılma Sihirli Kodu (JavaScript)
+        // Yazıların Tek Tek Daktilo Gibi Yazılma Kodu
         function typeEffect(element, text, speed, callback) {
             element.style.visibility = 'visible';
             let i = 0;
@@ -153,14 +153,21 @@
             const bioEl = document.getElementById('text-bio');
             const linksEl = document.getElementById('text-links');
             const secTitleEl = document.getElementById('text-sectitle');
-            const listEl = document.getElementById('text-list');
+            
+            const show1El = document.getElementById('show-1');
+            const show2El = document.getElementById('show-2');
+            const show3El = document.getElementById('show-3');
 
             typeEffect(titleEl, "Rümeysa Orhun", 70, function() {
-                typeEffect(mottoEl, "CAN DO ANYTHING I WANT!", 50, function() {
+                typeEffect(mottoEl, "I CAN DO ANYTHING I WANT!", 50, function() {
                     typeEffect(bioEl, "yeah garamond is nice . i don't invest 😊", 40, function() {
                         showElementImmediately(linksEl, function() {
                             typeEffect(secTitleEl, "currently watching:", 50, function() {
-                                showElementImmediately(listEl);
+                                typeEffect(show1El, "Muhteşem Yüzyıl (Magnificent Century)", 40, function() {
+                                    typeEffect(show2El, "Lucifer", 40, function() {
+                                        typeEffect(show3El, "Monster (have no idea why couldn't finish before)", 40);
+                                    });
+                                });
                             });
                         });
                     });
