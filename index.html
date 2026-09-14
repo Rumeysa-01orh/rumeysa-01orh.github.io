@@ -3,7 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Benjamin & Rümeysa</title>
+    
+    <!-- Link Önizleme Başlığı -->
+    <title>To Benjamin</title>
+    <meta property="og:title" content="To Benjamin">
+    <meta property="og:description" content="">
+    <meta property="og:type" content="website">
+    
+    <!-- WhatsApp / iMessage Fotoğraf Önizlemesini Engelleme -->
+    <meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+    <meta property="og:image:width" content="0">
+    <meta property="og:image:height" content="0">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="">
+
     <style>
         * {
             font-family: "Garamond", "Georgia", serif !important;
@@ -113,15 +126,17 @@
             color: #cc2b2b !important; 
         }
 
-        /* Konfeti Efekti */
+        /* Beyaz ve Parlak Konfeti Efekti */
         .confetti-piece {
             position: fixed;
-            width: 10px;
-            height: 10px;
+            width: 9px;
+            height: 9px;
             top: -20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 8px #ffffff, 0 0 12px #ffffff; /* Parlama / Işıltı efekti */
             z-index: 99999;
             pointer-events: none;
-            animation: fall linear forwards;
+            animation: fall linear forwards, sparkle 0.6s ease-in-out infinite alternate;
         }
 
         @keyframes fall {
@@ -131,7 +146,19 @@
             }
             100% {
                 transform: translateY(105vh) rotate(720deg);
-                opacity: 0.8;
+                opacity: 0.6;
+            }
+        }
+
+        /* Işıltılı Yanıp Sönme Efekti */
+        @keyframes sparkle {
+            0% {
+                opacity: 0.4;
+                box-shadow: 0 0 4px #ffffff;
+            }
+            100% {
+                opacity: 1;
+                box-shadow: 0 0 12px #ffffff, 0 0 18px #ffffff;
             }
         }
 
@@ -248,25 +275,22 @@
             }, 1000);
         });
 
-        // Konfeti Yağmuru
+        // Parlak Beyaz Konfeti Yağmuru
         readyBtn.addEventListener('click', () => {
             s4.classList.remove('active');
             s5.classList.add('active');
             
-            const colors = ['#f2d74e', '#e94a3f', '#3caea3', '#20639b', '#f6d55c', '#ed553b'];
-            
-            for (let i = 0; i < 120; i++) {
+            for (let i = 0; i < 130; i++) {
                 setTimeout(() => {
                     const piece = document.createElement('div');
                     piece.classList.add('confetti-piece');
                     piece.style.left = Math.random() * 100 + 'vw';
-                    piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                     piece.style.transform = 'scale(' + (Math.random() * 0.8 + 0.5) + ')';
-                    piece.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
+                    piece.style.animationDuration = (Math.random() * 2 + 2.5) + 's, ' + (Math.random() * 0.4 + 0.4) + 's';
                     document.body.appendChild(piece);
                     
                     setTimeout(() => { piece.remove(); }, 4500);
-                }, i * 25);
+                }, i * 20);
             }
         });
     </script>
