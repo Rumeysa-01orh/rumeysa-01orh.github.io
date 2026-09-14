@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>...</title>
-    <!-- Konfeti Efekti İçin Gerekli Kütüphane -->
+    <!-- Konfeti Efekti İçin Kütüphane -->
     <script src="https://jsdelivr.net"></script>
     <style>
         body {
             font-family: "Garamond", "Georgia", serif;
-            background-color: #f5f2eb; /* İstediğiniz Bej Rengi */
+            background-color: #f5f2eb; /* Bej Rengi */
             color: #111111;
             display: flex;
             flex-direction: column;
@@ -28,15 +28,15 @@
             width: 100%;
         }
 
-        /* Yuvarlak Profil Resmi Alanı */
+        /* Profil Resminizin Yuvarlak Ayarı */
         .profile-img {
-            width: 150px;
-            height: 150px;
+            width: 160px;
+            height: 160px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #111111;
+            border: 2.5px solid #111111;
             margin-bottom: 20px;
-            box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.08);
         }
 
         h1 {
@@ -48,10 +48,10 @@
         }
 
         .subtitle {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-style: italic;
-            margin-bottom: 10px;
-            color: #333333;
+            margin-bottom: 5px;
+            color: #222222;
         }
 
         .btn-container {
@@ -82,17 +82,14 @@
             color: #f5f2eb;
         }
 
-        /* Konumlandırmalar */
         #yesBtn { position: absolute; left: calc(50% - 170px); top: 40px; z-index: 5; }
         #noBtn { position: absolute; left: calc(50% + 30px); top: 40px; transition: all 0.15s ease-out; z-index: 10; }
 
-        /* Ekran Geçişleri */
         .screen { display: none; }
         .active { display: block; animation: fadeIn 0.5s ease forwards; }
 
-        /* Geri Sayım Tasarımı */
         #countdownDisplay {
-            font-size: 5rem;
+            font-size: 6rem;
             font-weight: bold;
             font-family: "Garamond", serif;
         }
@@ -105,21 +102,21 @@
 </head>
 <body>
 
-    <!-- Arka Planda Çalacak Joel Sunny - Codex Müziği -->
-    <audio id="bgMusic" loop>
-        <source src="https://soundhelix.com" type="audio/mpeg">
+    <!-- Arka Planda Çalacak Orijinal Keman Şarkısı (Joel Sunny - Codex) -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://r2.dev" type="audio/mpeg">
     </audio>
 
-    <!-- EKRAN 1: Giriş Profili -->
+    <!-- EKRAN 1 -->
     <div class="container screen active" id="screen1">
-        <!-- Fotoğrafınızın İnternet Üzerindeki Geçici Sürümü Yerleştirildi -->
-        <img src="https://unsplash.com" class="profile-img" alt="Rümeysa Orhun">
+        <!-- Yüklediğiniz görsel ismi boşlukları uyumlu olacak şekilde buraya eklendi -->
+        <img src="WhatsApp Image 2026-09-02 at 17.54.32.jpeg" class="profile-img" alt="Rümeysa Orhun">
         <div class="subtitle">Im Rümeysa</div>
         <h1>Welcome Benjamin Shi!</h1>
         <button id="nextBtn" style="position: static; margin-top: 20px;">Next</button>
     </div>
 
-    <!-- EKRAN 2: İyilik İsteme ve Kaçan Buton -->
+    <!-- EKRAN 2 -->
     <div class="container screen" id="screen2">
         <h1>Would you do me a favor?</h1>
         <div class="btn-container">
@@ -128,51 +125,45 @@
         </div>
     </div>
 
-    <!-- EKRAN 3: Geri Sayım Ekranı -->
+    <!-- EKRAN 3 -->
     <div class="container screen" id="screen3">
         <div id="countdownDisplay">3</div>
     </div>
 
-    <!-- EKRAN 4: Are you ready butonu -->
+    <!-- EKRAN 4 -->
     <div class="container screen" id="screen4">
-        <h1>...</h1>
+        <h1 style="font-size: 3rem;">...</h1>
         <button id="readyBtn" style="position: static;">Are you ready?</button>
     </div>
 
-    <!-- EKRAN 5: Büyük Final ve Konfeti -->
+    <!-- EKRAN 5 -->
     <div class="container screen" id="screen5">
-        <h1 style="font-size: 3rem; font-weight: bold; color: #cc0000;">I want u to delete my number and block me.</h1>
+        <h1 style="font-size: 2.8rem; font-weight: bold; line-height: 1.4;">I want u to delete my number and block me.</h1>
     </div>
 
     <script>
         const bgMusic = document.getElementById('bgMusic');
-        
-        // Ekranlar
         const s1 = document.getElementById('screen1');
         const s2 = document.getElementById('screen2');
         const s3 = document.getElementById('screen3');
         const s4 = document.getElementById('screen4');
         const s5 = document.getElementById('screen5');
 
-        // Butonlar
         const nextBtn = document.getElementById('nextBtn');
         const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
         const readyBtn = document.getElementById('readyBtn');
         const countdownDisplay = document.getElementById('countdownDisplay');
 
-        // 1. Ekrandan 2. Ekrana Geçiş (Müzik Burada Başlar)
         nextBtn.addEventListener('click', () => {
-            bgMusic.play().catch(err => console.log("Müzik tarayıcı engeline takıldı:", err));
+            bgMusic.play().catch(err => console.log("Müzik hatası:", err));
             s1.classList.remove('active');
             s2.classList.add('active');
         });
 
-        // "No" Butonunun Kaçma Fonksiyonu
         function noKac() {
             const paddingX = window.innerWidth * 0.25;
             const paddingY = window.innerHeight * 0.25;
-            
             const minX = paddingX;
             const maxX = window.innerWidth - noBtn.offsetWidth - paddingX;
             const minY = paddingY;
@@ -187,7 +178,6 @@
         noBtn.addEventListener('mouseenter', noKac);
         noBtn.addEventListener('touchstart', function(e) { e.preventDefault(); noKac(); });
 
-        // Yes Butonuna Basınca Geri Sayım Başlar
         yesBtn.addEventListener('click', () => {
             s2.classList.remove('active');
             s3.classList.add('active');
@@ -199,35 +189,22 @@
                     countdownDisplay.textContent = count;
                 } else {
                     clearInterval(timer);
-                    // Geri sayım bitti, Ready ekranına geç
                     s3.classList.remove('active');
                     s4.classList.add('active');
                 }
             }, 1000);
         });
 
-        // Ready Butonuna Basınca Final ve Konfeti Patlaması
         readyBtn.addEventListener('click', () => {
             s4.classList.remove('active');
             s5.classList.add('active');
             
-            // Sürekli konfeti patlatma efekti
-            var duration = 4 * 1000;
+            var duration = 5 * 1000;
             var end = Date.now() + duration;
 
             (function frame() {
-                confetti({
-                    particleCount: 5,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 }
-                });
-                confetti({
-                    particleCount: 5,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 }
-                });
+                confetti({ particleCount: 6, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 6, angle: 120, spread: 55, origin: { x: 1 } });
 
                 if (Date.now() < end) {
                     requestAnimationFrame(frame);
