@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>...</title>
-    <!-- Kesinlikle Engellenmeyen Konfeti Kütüphanesi -->
-    <script src="https://jsdelivr.net"></script>
     <style>
-        /* Tüm Sitede Garamond Fontu */
         * {
             font-family: "Garamond", "Georgia", serif !important;
+            box-sizing: border-box;
         }
 
         body {
@@ -23,11 +21,11 @@
             margin: 0;
             overflow: hidden;
             padding: 20px;
-            box-sizing: border-box;
             text-align: center;
+            position: relative;
         }
 
-        /* Tarayıcı Engelini Aşan Şık Giriş Perdesi */
+        /* Giriş Perdesi */
         #entryOverlay {
             position: fixed;
             top: 0;
@@ -39,15 +37,14 @@
             align-items: center;
             justify-content: center;
             z-index: 9999;
-            transition: opacity 0.5s ease, visibility 0.5s;
         }
 
         .container {
             max-width: 600px;
             width: 100%;
+            z-index: 10;
         }
 
-        /* Yuvarlak Profil Resminiz */
         .profile-img {
             width: 160px;
             height: 160px;
@@ -81,7 +78,6 @@
             align-items: center;
         }
 
-        /* Büyük ve Kalın Butonlar */
         button {
             font-size: 1.6rem;
             font-weight: bold !important;
@@ -100,7 +96,7 @@
         }
 
         #yesBtn { position: absolute; left: calc(50% - 170px); top: 40px; z-index: 5; }
-        #noBtn { position: absolute; left: calc(50% + 30px); top: 40px; transition: all 0.15s ease-out; z-index: 10; }
+        #noBtn { position: absolute; left: calc(50% + 30px); top: 40px; transition: all 0.1s ease-out; z-index: 10; }
 
         .screen { display: none; }
         .active { display: block; animation: fadeIn 0.5s ease forwards; }
@@ -110,12 +106,33 @@
             font-weight: bold;
         }
 
-        /* İstediğiniz Kırmızı Renkli Son Mesaj */
         .final-message {
             font-size: 2.8rem;
             font-weight: bold;
             line-height: 1.4;
             color: #cc2b2b !important; 
+        }
+
+        /* Konfeti Parçaları Düzeltmesi */
+        .confetti-piece {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -20px;
+            z-index: 99999;
+            pointer-events: none;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(105vh) rotate(720deg);
+                opacity: 0.8;
+            }
         }
 
         @keyframes fadeIn {
@@ -126,19 +143,18 @@
 </head>
 <body>
 
-    <!-- Giriş Perdesi: Tıklanınca müzik ilk saniyeden itibaren başlayacak -->
+    <!-- Giriş Perdesi -->
     <div id="entryOverlay">
         <button id="startPlayBtn">Open</button>
     </div>
 
-    <!-- Joel Sunny - Codex Müziği (En Kararlı Doğrudan Ses Bağlantısı) -->
+    <!-- Müzik Yolu Düzeltildi (Kendi MP3 dosyanızın adını yazın) -->
     <audio id="bgMusic" loop preload="auto">
-        <source src="https://r2.dev" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg">
     </audio>
 
     <!-- EKRAN 1 -->
     <div class="container screen active" id="screen1">
-        <!-- Kod, görseldeki isminizle %100 uyumlu hale getirildi -->
         <img src="WhatsApp Image 2026-09-02 at 17.54.32.jpeg" class="profile-img" alt="Rümeysa Orhun">
         <div class="subtitle">Im Rümeysa</div>
         <h1>Welcome Benjamin Shi!</h1>
@@ -187,13 +203,10 @@
         const readyBtn = document.getElementById('readyBtn');
         const countdownDisplay = document.getElementById('countdownDisplay');
 
-        // Open butonuna basıldığı an müzik ILK ANDAN itibaren başlar
+        // Ses motoru tetikleme
         startPlayBtn.addEventListener('click', () => {
             bgMusic.play().catch(err => console.log("Müzik hatası:", err));
-            entryOverlay.style.opacity = '0';
-            setTimeout(() => {
-                entryOverlay.style.visibility = 'hidden';
-            }, 500);
+            entryOverlay.style.display = 'none';
         });
 
         nextBtn.addEventListener('click', () => {
@@ -235,22 +248,26 @@
             }, 1000);
         });
 
+        // Konfeti Yağmuru Fonksiyonu
         readyBtn.addEventListener('click', () => {
             s4.classList.remove('active');
             s5.classList.add('active');
             
-            // Güçlü konfeti yağmuru efekti
-            var duration = 6 * 1000;
-            var end = Date.now() + duration;
-
-            (function frame() {
-                confetti({ particleCount: 7, angle: 60, spread: 65, origin: { x: 0 } });
-                confetti({ particleCount: 7, angle: 120, spread: 65, origin: { x: 1 } });
-
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
-                }
-            }());
+            const colors = ['#f2d74e', '#e94a3f', '#3caea3', '#20639b', '#f6d55c', '#ed553b'];
+            
+            for (let i = 0; i < 120; i++) {
+                setTimeout(() => {
+                    const piece = document.createElement('div');
+                    piece.classList.add('confetti-piece');
+                    piece.style.left = Math.random() * 100 + 'vw';
+                    piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    piece.style.transform = 'scale(' + (Math.random() * 0.8 + 0.5) + ')';
+                    piece.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
+                    document.body.appendChild(piece);
+                    
+                    setTimeout(() => { piece.remove(); }, 4500);
+                }, i * 25);
+            }
         });
     </script>
 
