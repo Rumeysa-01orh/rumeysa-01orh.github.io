@@ -84,11 +84,12 @@
 
         .btn-container {
             position: relative;
-            height: 150px;
+            height: 100px;
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
+            gap: 30px;
         }
 
         button {
@@ -108,15 +109,16 @@
             color: #f5f2eb;
         }
 
-        #yesBtn { position: absolute; left: calc(50% - 170px); top: 40px; z-index: 5; }
-        
-        /* No Butonuna Sabit (Fixed) Pozisyon Verildi ve Ekran İçi Kaçış Hazırlandı */
+        /* Yes ve No aynı kapsayıcı içinde tam yan yana hizada */
+        #yesBtn { 
+            position: relative; 
+            z-index: 5; 
+        }
+
         #noBtn { 
-            position: fixed; 
-            left: calc(50% + 30px); 
-            top: calc(50% - 35px); 
-            transition: all 0.15s ease-out; 
+            position: relative; 
             z-index: 999; 
+            transition: left 0.15s ease-out, top 0.15s ease-out; 
         }
 
         .screen { display: none; }
@@ -264,28 +266,33 @@
             s2.classList.add('active');
         });
 
-        // Ekran İçi Güvenli Kaçış Fonksiyonu
+        // Ekrandan Kesinlikle Çıkamayan Kaçış Mantığı
         function noKac() {
+            // Kaçmaya başladığı an position:fixed yaparak serbest bırakıyoruz
+            noBtn.style.position = 'fixed';
+
             const btnWidth = noBtn.offsetWidth || 140;
             const btnHeight = noBtn.offsetHeight || 60;
 
-            // Kenarlardan taşmayı önleyen sınırlar
-            const padding = 20; 
-            const maxX = window.innerWidth - btnWidth - padding;
-            const maxY = window.innerHeight - btnHeight - padding;
+            const margin = 15; // Ekran kenarı emniyet payı
+            const minX = margin;
+            const maxX = window.innerWidth - btnWidth - margin;
+            const minY = margin;
+            const maxY = window.innerHeight - btnHeight - margin;
 
-            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
-            const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
-            
+            // Rastgele koordinat üretip ekran içine zorunlu hapsediyoruz
+            let randomX = Math.floor(Math.random() * (maxX - minX)) + minX;
+            let randomY = Math.floor(Math.random() * (maxY - minY)) + minY;
+
+            randomX = Math.max(minX, Math.min(randomX, maxX));
+            randomY = Math.max(minY, Math.min(randomY, maxY));
+
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
         }
 
-        // Fare Yaklaşınca Kaçış
         noBtn.addEventListener('mouseenter', noKac);
         noBtn.addEventListener('mousemove', noKac);
-        
-        // Mobilde Dokunmaya Çalışınca / Yaklaşınca Kaçış
         noBtn.addEventListener('touchstart', function(e) { 
             e.preventDefault(); 
             noKac(); 
@@ -293,7 +300,7 @@
 
         yesBtn.addEventListener('click', () => {
             playMusic();
-            noBtn.style.display = 'none'; // Yes seçilince No butonunu gizle
+            noBtn.style.display = 'none';
             s2.classList.remove('active');
             s3.classList.add('active');
             
