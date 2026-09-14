@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>...</title>
+    <title>Benjamin & Rümeysa</title>
     <style>
         * {
             font-family: "Garamond", "Georgia", serif !important;
@@ -11,7 +11,7 @@
         }
 
         body {
-            background-color: #f5f2eb; /* Bej Rengi */
+            background-color: #f5f2eb;
             color: #111111;
             display: flex;
             flex-direction: column;
@@ -113,7 +113,7 @@
             color: #cc2b2b !important; 
         }
 
-        /* Konfeti Parçaları Düzeltmesi */
+        /* Konfeti Efekti */
         .confetti-piece {
             position: fixed;
             width: 10px;
@@ -148,9 +148,9 @@
         <button id="startPlayBtn">Open</button>
     </div>
 
-    <!-- Müzik Yolu Düzeltildi (Kendi MP3 dosyanızın adını yazın) -->
+    <!-- Joel Sunny - Codex Müziği (Klasördeki dosya adı ile eşleştirildi) -->
     <audio id="bgMusic" loop preload="auto">
-        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg">
+        <source src="codex.mp3" type="audio/mpeg">
     </audio>
 
     <!-- EKRAN 1 -->
@@ -203,9 +203,9 @@
         const readyBtn = document.getElementById('readyBtn');
         const countdownDisplay = document.getElementById('countdownDisplay');
 
-        // Ses motoru tetikleme
+        // Müzik Başlatma
         startPlayBtn.addEventListener('click', () => {
-            bgMusic.play().catch(err => console.log("Müzik hatası:", err));
+            bgMusic.play().catch(err => console.log("Müzik yükleme/oynatma hatası:", err));
             entryOverlay.style.display = 'none';
         });
 
@@ -248,7 +248,7 @@
             }, 1000);
         });
 
-        // Konfeti Yağmuru Fonksiyonu
+        // Konfeti Yağmuru
         readyBtn.addEventListener('click', () => {
             s4.classList.remove('active');
             s5.classList.add('active');
