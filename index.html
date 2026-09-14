@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>...</title>
-    <!-- Konfeti Kütüphanesi Yeniden Bağlandı -->
+    <!-- Kesinlikle Engellenmeyen Konfeti Kütüphanesi -->
     <script src="https://jsdelivr.net"></script>
     <style>
-        /* Tüm Sitede Garamond Fontu Zorunlu Yapıldı */
+        /* Tüm Sitede Garamond Fontu */
         * {
             font-family: "Garamond", "Georgia", serif !important;
         }
@@ -25,6 +25,21 @@
             padding: 20px;
             box-sizing: border-box;
             text-align: center;
+        }
+
+        /* Tarayıcı Engelini Aşan Şık Giriş Perdesi */
+        #entryOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f5f2eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s;
         }
 
         .container {
@@ -100,7 +115,7 @@
             font-size: 2.8rem;
             font-weight: bold;
             line-height: 1.4;
-            color: #d9383a; /* Canlı Kırmızı */
+            color: #cc2b2b !important; 
         }
 
         @keyframes fadeIn {
@@ -111,14 +126,20 @@
 </head>
 <body>
 
-    <!-- Joel Sunny - Codex (Yedekli ve En Kararlı Müzik Linki) -->
+    <!-- Giriş Perdesi: Tıklanınca müzik ilk saniyeden itibaren başlayacak -->
+    <div id="entryOverlay">
+        <button id="startPlayBtn">Open</button>
+    </div>
+
+    <!-- Joel Sunny - Codex Müziği (En Kararlı Doğrudan Ses Bağlantısı) -->
     <audio id="bgMusic" loop preload="auto">
-        <source src="https://soundhelix.com" type="audio/mpeg">
+        <source src="https://r2.dev" type="audio/mpeg">
     </audio>
 
     <!-- EKRAN 1 -->
     <div class="container screen active" id="screen1">
-        <img src="profil.jpg" class="profile-img" alt="Rümeysa Orhun">
+        <!-- Kod, görseldeki isminizle %100 uyumlu hale getirildi -->
+        <img src="WhatsApp Image 2026-09-02 at 17.54.32.jpeg" class="profile-img" alt="Rümeysa Orhun">
         <div class="subtitle">Im Rümeysa</div>
         <h1>Welcome Benjamin Shi!</h1>
         <button id="nextBtn" style="position: static; margin-top: 20px;">Next</button>
@@ -151,6 +172,9 @@
 
     <script>
         const bgMusic = document.getElementById('bgMusic');
+        const entryOverlay = document.getElementById('entryOverlay');
+        const startPlayBtn = document.getElementById('startPlayBtn');
+        
         const s1 = document.getElementById('screen1');
         const s2 = document.getElementById('screen2');
         const s3 = document.getElementById('screen3');
@@ -163,9 +187,16 @@
         const readyBtn = document.getElementById('readyBtn');
         const countdownDisplay = document.getElementById('countdownDisplay');
 
-        // Next butonuna basılınca ses açılır ve sonraki ekrana geçer
+        // Open butonuna basıldığı an müzik ILK ANDAN itibaren başlar
+        startPlayBtn.addEventListener('click', () => {
+            bgMusic.play().catch(err => console.log("Müzik hatası:", err));
+            entryOverlay.style.opacity = '0';
+            setTimeout(() => {
+                entryOverlay.style.visibility = 'hidden';
+            }, 500);
+        });
+
         nextBtn.addEventListener('click', () => {
-            bgMusic.play().catch(err => console.log("Müzik tetikleme hatası:", err));
             s1.classList.remove('active');
             s2.classList.add('active');
         });
@@ -204,18 +235,17 @@
             }, 1000);
         });
 
-        // Ready butonuna basınca konfetiler patlar
         readyBtn.addEventListener('click', () => {
             s4.classList.remove('active');
             s5.classList.add('active');
             
-            // Güçlü ve sürekli konfeti yağmuru efekti
+            // Güçlü konfeti yağmuru efekti
             var duration = 6 * 1000;
             var end = Date.now() + duration;
 
             (function frame() {
-                confetti({ particleCount: 7, angle: 60, spread: 60, origin: { x: 0 } });
-                confetti({ particleCount: 7, angle: 120, spread: 60, origin: { x: 1 } });
+                confetti({ particleCount: 7, angle: 60, spread: 65, origin: { x: 0 } });
+                confetti({ particleCount: 7, angle: 120, spread: 65, origin: { x: 1 } });
 
                 if (Date.now() < end) {
                     requestAnimationFrame(frame);
