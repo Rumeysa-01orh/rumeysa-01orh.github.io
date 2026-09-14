@@ -22,36 +22,39 @@
         }
 
         .container {
-            max-width: 500px;
+            max-width: 600px;
+            width: 100%;
         }
 
         h1 {
-            font-size: 2.2rem;
+            font-family: "Garamond", serif;
+            font-size: 2.4rem;
             font-weight: normal;
             margin-bottom: 40px;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
         .btn-container {
             position: relative;
-            height: 100px;
+            height: 150px;
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
         }
 
+        /* İstediğiniz büyük ve kalın (bold) buton tasarımları */
         button {
             font-family: "Garamond", serif;
-            font-size: 1.3rem;
-            padding: 10px 35px;
-            border: 1px solid #111111;
+            font-size: 1.6rem;
+            font-weight: bold;
+            padding: 15px 45px;
+            border: 2.5px solid #111111;
             background-color: #ffffff;
             color: #111111;
             cursor: pointer;
             transition: background-color 0.2s, color 0.2s;
-            min-width: 100px;
+            min-width: 130px;
         }
 
         button:hover {
@@ -59,19 +62,23 @@
             color: #ffffff;
         }
 
-        /* Kaçacak olan No butonu */
-        #noBtn {
-            position: absolute;
-            transition: all 0.1s ease;
-            z-index: 10;
-        }
-
+        /* Sabit duran büyük Yes butonu */
         #yesBtn {
             position: absolute;
+            left: calc(50% - 160px);
+            top: 40px;
             z-index: 5;
         }
 
-        /* İkinci aşama mesaj ekranı */
+        /* Sınırlar içinde kaçacak olan büyük No butonu */
+        #noBtn {
+            position: absolute;
+            left: calc(50% + 20px);
+            top: 40px;
+            transition: all 0.15s ease-out;
+            z-index: 10;
+        }
+
         .message-screen {
             display: none;
             animation: fadeIn 0.5s ease forwards;
@@ -85,9 +92,9 @@
 </head>
 <body>
 
-    <!-- 1. AŞAMA: Soru Ekranı -->
+    <!-- 1. AŞAMA: Giriş ve Soru Ekranı -->
     <div class="container" id="questionContainer">
-        <h1>Can you do me a favor?</h1>
+        <h1>Welcome Benjamin Shi.<br>I'm Rümeysa Orhun. 😇<br>Would you do me a favor?</h1>
         
         <div class="btn-container">
             <button id="yesBtn">Yes</button>
@@ -95,7 +102,7 @@
         </div>
     </div>
 
-    <!-- 2. AŞAMA: Net Mesaj Ekranı -->
+    <!-- 2. AŞAMA: Yes Butonuna Basınca Çıkacak Ekran -->
     <div class="container message-screen" id="messageContainer">
         <h1>Beni engellemeni istiyorum.</h1>
     </div>
@@ -106,33 +113,32 @@
         const questionContainer = document.getElementById('questionContainer');
         const messageContainer = document.getElementById('messageContainer');
 
-        // Butonların ilk konumları
-        function initButtons() {
-            yesBtn.style.left = 'calc(50% - 130px)';
-            yesBtn.style.top = '25px';
-            noBtn.style.left = 'calc(50% + 20px)';
-            noBtn.style.top = '25px';
-        }
-        window.onload = initButtons;
-
-        // "No" butonunun kaçma fonksiyonu
         function kac() {
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 40) + 20;
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 40) + 20;
+            // Ekranın orta %60'lık güvenli alan sınırları
+            const paddingX = window.innerWidth * 0.2;
+            const paddingY = window.innerHeight * 0.2;
             
-            noBtn.style.left = x + 'px';
-            noBtn.style.top = y + 'px';
+            const minX = paddingX;
+            const maxX = window.innerWidth - noBtn.offsetWidth - paddingX;
+            const minY = paddingY;
+            const maxY = window.innerHeight - noBtn.offsetHeight - paddingY;
+
+            // Güvenli alan içinde rastgele koordinat üretme
+            const randomX = Math.random() * (maxX - minX) + minX;
+            const randomY = Math.random() * (maxY - minY) + minY;
+            
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
         }
 
-        // Fareyle gelince kaç
+        // Fare yaklaştığında veya mobilde dokunulduğunda kaçış tetiklenir
         noBtn.addEventListener('mouseenter', kac);
-        // Mobilde dokununca kaç
         noBtn.addEventListener('touchstart', function(e) {
             e.preventDefault();
             kac();
         });
 
-        // "Yes" butonuna basınca ikinci ekranı aç
+        // "Yes" butonuna tıklandığında asıl mesaja geçiş yapar
         yesBtn.addEventListener('click', () => {
             questionContainer.style.display = 'none';
             messageContainer.style.display = 'block';
