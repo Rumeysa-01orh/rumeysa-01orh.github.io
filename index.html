@@ -109,7 +109,15 @@
         }
 
         #yesBtn { position: absolute; left: calc(50% - 170px); top: 40px; z-index: 5; }
-        #noBtn { position: absolute; left: calc(50% + 30px); top: 40px; transition: all 0.1s ease-out; z-index: 10; }
+        
+        /* No Butonuna Sabit (Fixed) Pozisyon Verildi ve Ekran İçi Kaçış Hazırlandı */
+        #noBtn { 
+            position: fixed; 
+            left: calc(50% + 30px); 
+            top: calc(50% - 35px); 
+            transition: all 0.15s ease-out; 
+            z-index: 999; 
+        }
 
         .screen { display: none; }
         .active { display: block; animation: fadeIn 0.5s ease forwards; }
@@ -256,25 +264,36 @@
             s2.classList.add('active');
         });
 
+        // Ekran İçi Güvenli Kaçış Fonksiyonu
         function noKac() {
-            const paddingX = window.innerWidth * 0.25;
-            const paddingY = window.innerHeight * 0.25;
-            const minX = paddingX;
-            const maxX = window.innerWidth - noBtn.offsetWidth - paddingX;
-            const minY = paddingY;
-            const maxY = window.innerHeight - noBtn.offsetHeight - paddingY;
+            const btnWidth = noBtn.offsetWidth || 140;
+            const btnHeight = noBtn.offsetHeight || 60;
 
-            const randomX = Math.random() * (maxX - minX) + minX;
-            const randomY = Math.random() * (maxY - minY) + minY;
+            // Kenarlardan taşmayı önleyen sınırlar
+            const padding = 20; 
+            const maxX = window.innerWidth - btnWidth - padding;
+            const maxY = window.innerHeight - btnHeight - padding;
+
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
             
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
         }
+
+        // Fare Yaklaşınca Kaçış
         noBtn.addEventListener('mouseenter', noKac);
-        noBtn.addEventListener('touchstart', function(e) { e.preventDefault(); noKac(); });
+        noBtn.addEventListener('mousemove', noKac);
+        
+        // Mobilde Dokunmaya Çalışınca / Yaklaşınca Kaçış
+        noBtn.addEventListener('touchstart', function(e) { 
+            e.preventDefault(); 
+            noKac(); 
+        });
 
         yesBtn.addEventListener('click', () => {
             playMusic();
+            noBtn.style.display = 'none'; // Yes seçilince No butonunu gizle
             s2.classList.remove('active');
             s3.classList.add('active');
             
