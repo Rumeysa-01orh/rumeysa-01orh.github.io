@@ -175,7 +175,7 @@
     </div>
 
     <!-- Joel Sunny - Codex Müziği -->
-    <audio id="bgMusic" loop preload="auto" playsinline>
+    <audio id="bgMusic" loop preload="auto" playsinline webkit-playsinline>
         <source src="codex.mp3" type="audio/mpeg">
     </audio>
 
@@ -183,7 +183,7 @@
     <div class="container screen active" id="screen1">
         <img src="WhatsApp Image 2026-09-02 at 17.54.32.jpeg" class="profile-img" alt="Rümeysa Orhun">
         <div class="subtitle">Im Rümeysa</div>
-        <h1>Welcome Benjamin!</h1>
+        <h1>Welcome Benjamin Shi!</h1>
         <button id="nextBtn" style="position: static; margin-top: 20px;">Next</button>
     </div>
 
@@ -229,26 +229,29 @@
         const readyBtn = document.getElementById('readyBtn');
         const countdownDisplay = document.getElementById('countdownDisplay');
 
-        // Kesintisiz Ses Oynatma Fonksiyonu
-        function safePlayAudio() {
-            if (bgMusic.paused) {
-                bgMusic.play().catch(err => {
-                    console.log("Ses oynatılmaya çalışılıyor...", err);
-                });
+        // Web Audio Context (iOS / Safari Kilit Açıcı)
+        let audioCtx;
+
+        function playMusic() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            
+            bgMusic.play().catch(function(error) {
+                console.log("Müzik çalma hatası:", error);
+            });
         }
 
-        // Giriş Butonu Tıklaması
         startPlayBtn.addEventListener('click', () => {
-            safePlayAudio();
+            playMusic();
             entryOverlay.style.display = 'none';
         });
 
-        // Tıklamalarda Sesi Tetikleme
-        document.body.addEventListener('click', safePlayAudio, { once: false });
-
         nextBtn.addEventListener('click', () => {
-            safePlayAudio();
+            playMusic();
             s1.classList.remove('active');
             s2.classList.add('active');
         });
@@ -271,7 +274,7 @@
         noBtn.addEventListener('touchstart', function(e) { e.preventDefault(); noKac(); });
 
         yesBtn.addEventListener('click', () => {
-            safePlayAudio();
+            playMusic();
             s2.classList.remove('active');
             s3.classList.add('active');
             
@@ -290,7 +293,7 @@
 
         // Parlak Beyaz Konfeti Yağmuru
         readyBtn.addEventListener('click', () => {
-            safePlayAudio();
+            playMusic();
             s4.classList.remove('active');
             s5.classList.add('active');
             
