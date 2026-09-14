@@ -3,177 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rümeysa Orhun</title>
+    <title>...</title>
     <style>
-        /* Açık Tema Renkleri */
-        :root {
-            --bg-color: #ffffff;
-            --text-color: #111111;
-            --motto-color: #333333;
-            --hover-color: #666666;
-        }
-
-        /* Karanlık Tema Renkleri */
-        [data-theme="dark"] {
-            --bg-color: #111111;
-            --text-color: #f4f4f4;
-            --motto-color: #aaaaaa;
-            --hover-color: #cccccc;
-        }
-
         body {
             font-family: "Garamond", "Georgia", serif;
-            font-style: italic; /* Sitedeki tüm yazıları tamamen italik (eğik) yapar */
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            max-width: 650px;
-            margin: 100px auto;
-            padding: 0 30px;
-            line-height: 1.6;
-            transition: background-color 0.3s, color 0.3s;
-            position: relative;
+            background-color: #ffffff;
+            color: #111111;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
         }
 
-        /* Ay / Güneş Butonu Tasarımı */
-        .theme-toggle {
-            position: absolute;
-            top: -40px;
-            right: 30px;
-            background: none;
-            border: none;
-            font-size: 1.3rem;
-            cursor: pointer;
-            padding: 5px;
+        .container {
+            max-width: 500px;
         }
 
         h1 {
             font-size: 2.2rem;
             font-weight: normal;
-            margin-bottom: 0px;
-            display: inline-block;
-            font-style: italic;
+            margin-bottom: 40px;
+            line-height: 1.4;
         }
-        .motto {
-            color: var(--motto-color);
-            margin-top: 5px;
-            margin-bottom: 35px;
-            font-style: italic;
+
+        .btn-container {
+            position: relative;
+            height: 100px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
         }
-        .bio {
-            margin-bottom: 25px;
-            font-size: 1.1rem;
-            font-style: italic;
+
+        button {
+            font-family: "Garamond", serif;
+            font-size: 1.3rem;
+            padding: 10px 35px;
+            border: 1px solid #111111;
+            background-color: #ffffff;
+            color: #111111;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            min-width: 100px;
         }
-        .links a {
-            color: var(--text-color);
-            text-decoration: underline;
-            font-style: italic;
+
+        button:hover {
+            background-color: #111111;
+            color: #ffffff;
         }
-        .links a:hover {
-            color: var(--hover-color);
+
+        /* Kaçacak olan No butonu */
+        #noBtn {
+            position: absolute;
+            transition: all 0.1s ease;
+            z-index: 10;
         }
-        .section-title {
-            margin-top: 45px;
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-            font-style: italic;
+
+        #yesBtn {
+            position: absolute;
+            z-index: 5;
         }
-        ul {
-            list-style-type: disc;
-            padding-left: 20px;
-            margin-top: 5px;
+
+        /* İkinci aşama mesaj ekranı */
+        .message-screen {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
         }
-        li {
-            margin-bottom: 6px;
-            font-size: 1.1rem;
-            font-style: italic;
-            min-height: 1.6em; /* Yazılmadan önce boşluk kaymasını önler */
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Ay / Güneş Değiştirme Butonu -->
-    <button class="theme-toggle" id="theme-btn">🌙</button>
+    <!-- 1. AŞAMA: Soru Ekranı -->
+    <div class="container" id="questionContainer">
+        <h1>Can you do me a favor?</h1>
+        
+        <div class="btn-container">
+            <button id="yesBtn">Yes</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
 
-    <h1 id="text-title"></h1><br>
-    <p id="text-motto" class="motto"></p>
-    <p id="text-bio" class="bio"></p>
-    
-    <p id="text-links" class="links" style="display:none;">
-        <a href="https://instagram.com" target="_blank">instagram</a>
-    </p>
-
-    <p id="text-sectitle" class="section-title"></p>
-    
-    <ul id="text-list" style="display:none; list-style-type: disc; padding-left: 20px;">
-        <li id="show-1"></li>
-        <li id="show-2"></li>
-        <li id="show-3"></li>
-    </ul>
+    <!-- 2. AŞAMA: Net Mesaj Ekranı -->
+    <div class="container message-screen" id="messageContainer">
+        <h1>Beni engellemeni istiyorum.</h1>
+    </div>
 
     <script>
-        // Tema Değiştirme (Ay / Güneş) Kodu
-        const btn = document.getElementById('theme-btn');
-        btn.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            if (currentTheme === 'dark') {
-                document.documentElement.removeAttribute('data-theme');
-                btn.textContent = '🌙';
-            } else {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                btn.textContent = '☀️';
-            }
-        });
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const questionContainer = document.getElementById('questionContainer');
+        const messageContainer = document.getElementById('messageContainer');
 
-        // Harf Harf Yazma Fonksiyonu
-        function typeWriter(element, text, speed) {
-            return new Promise((resolve) => {
-                let i = 0;
-                element.innerHTML = "";
-                function type() {
-                    if (i < text.length) {
-                        element.innerHTML += text.charAt(i);
-                        i++;
-                        setTimeout(type, speed);
-                    } else {
-                        resolve();
-                    }
-                }
-                type();
-            });
+        // Butonların ilk konumları
+        function initButtons() {
+            yesBtn.style.left = 'calc(50% - 130px)';
+            yesBtn.style.top = '25px';
+            noBtn.style.left = 'calc(50% + 20px)';
+            noBtn.style.top = '25px';
+        }
+        window.onload = initButtons;
+
+        // "No" butonunun kaçma fonksiyonu
+        function kac() {
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 40) + 20;
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 40) + 20;
+            
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
         }
 
-        // Sayfa yüklenince sırayla ve zorunlu daktilo efekti başlar
-        window.onload = async function() {
-            const titleEl = document.getElementById('text-title');
-            const mottoEl = document.getElementById('text-motto');
-            const bioEl = document.getElementById('text-bio');
-            const linksEl = document.getElementById('text-links');
-            const secTitleEl = document.getElementById('text-sectitle');
-            const listEl = document.getElementById('text-list');
-            const show1El = document.getElementById('show-1');
-            const show2El = document.getElementById('show-2');
-            const show3El = document.getElementById('show-3');
+        // Fareyle gelince kaç
+        noBtn.addEventListener('mouseenter', kac);
+        // Mobilde dokununca kaç
+        noBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            kac();
+        });
 
-            // Sıralı Akış
-            await typeWriter(titleEl, "Rümeysa Orhun", 70);
-            await typeWriter(mottoEl, "I CAN DO ANYTHING I WANT!", 50);
-            await typeWriter(bioEl, "yeah garamond is nice . i don't invest 🥲", 40);
-            
-            // Instagram linkini göster
-            linksEl.style.display = "block";
-            
-            await typeWriter(secTitleEl, "currently watching:", 50);
-            
-            // Film listesini aç ve sırayla HARF HARF yazdır
-            listEl.style.display = "block";
-            await typeWriter(show1El, "Muhteşem Yüzyıl (Magnificent Century)", 40);
-            await typeWriter(show2El, "Lucifer", 40);
-            await typeWriter(show3El, "Monster ( I have no idea why I couldn't finish it before )", 40);
-        };
+        // "Yes" butonuna basınca ikinci ekranı aç
+        yesBtn.addEventListener('click', () => {
+            questionContainer.style.display = 'none';
+            messageContainer.style.display = 'block';
+        });
     </script>
 
 </body>
 </html>
-
