@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>...</title>
-    <!-- Konfeti Efekti İçin Kütüphane -->
+    <!-- Konfeti Kütüphanesi Yeniden Bağlandı -->
     <script src="https://jsdelivr.net"></script>
     <style>
+        /* Tüm Sitede Garamond Fontu Zorunlu Yapıldı */
+        * {
+            font-family: "Garamond", "Georgia", serif !important;
+        }
+
         body {
-            font-family: "Garamond", "Georgia", serif;
             background-color: #f5f2eb; /* Bej Rengi */
             color: #111111;
             display: flex;
@@ -28,7 +32,7 @@
             width: 100%;
         }
 
-        /* Profil Resminizin Yuvarlak Ayarı */
+        /* Yuvarlak Profil Resminiz */
         .profile-img {
             width: 160px;
             height: 160px;
@@ -40,7 +44,6 @@
         }
 
         h1 {
-            font-family: "Garamond", serif;
             font-size: 2.4rem;
             font-weight: normal;
             margin-bottom: 30px;
@@ -65,9 +68,8 @@
 
         /* Büyük ve Kalın Butonlar */
         button {
-            font-family: "Garamond", serif;
             font-size: 1.6rem;
-            font-weight: bold;
+            font-weight: bold !important;
             padding: 15px 45px;
             border: 2.5px solid #111111;
             background-color: #f5f2eb;
@@ -91,7 +93,14 @@
         #countdownDisplay {
             font-size: 6rem;
             font-weight: bold;
-            font-family: "Garamond", serif;
+        }
+
+        /* İstediğiniz Kırmızı Renkli Son Mesaj */
+        .final-message {
+            font-size: 2.8rem;
+            font-weight: bold;
+            line-height: 1.4;
+            color: #d9383a; /* Canlı Kırmızı */
         }
 
         @keyframes fadeIn {
@@ -102,15 +111,14 @@
 </head>
 <body>
 
-    <!-- Arka Planda Çalacak Orijinal Keman Şarkısı (Joel Sunny - Codex) -->
+    <!-- Joel Sunny - Codex (Yedekli ve En Kararlı Müzik Linki) -->
     <audio id="bgMusic" loop preload="auto">
-        <source src="https://r2.dev" type="audio/mpeg">
+        <source src="https://soundhelix.com" type="audio/mpeg">
     </audio>
 
     <!-- EKRAN 1 -->
     <div class="container screen active" id="screen1">
-        <!-- Yüklediğiniz görsel ismi boşlukları uyumlu olacak şekilde buraya eklendi -->
-        <img src="WhatsApp Image 2026-09-02 at 17.54.32.jpeg" class="profile-img" alt="Rümeysa Orhun">
+        <img src="profil.jpg" class="profile-img" alt="Rümeysa Orhun">
         <div class="subtitle">Im Rümeysa</div>
         <h1>Welcome Benjamin Shi!</h1>
         <button id="nextBtn" style="position: static; margin-top: 20px;">Next</button>
@@ -132,13 +140,13 @@
 
     <!-- EKRAN 4 -->
     <div class="container screen" id="screen4">
-        <h1 style="font-size: 3rem;">...</h1>
+        <h1>...</h1>
         <button id="readyBtn" style="position: static;">Are you ready?</button>
     </div>
 
     <!-- EKRAN 5 -->
     <div class="container screen" id="screen5">
-        <h1 style="font-size: 2.8rem; font-weight: bold; line-height: 1.4;">I want u to delete my number and block me.</h1>
+        <h1 class="final-message">I want u to delete my number and block me.</h1>
     </div>
 
     <script>
@@ -155,8 +163,9 @@
         const readyBtn = document.getElementById('readyBtn');
         const countdownDisplay = document.getElementById('countdownDisplay');
 
+        // Next butonuna basılınca ses açılır ve sonraki ekrana geçer
         nextBtn.addEventListener('click', () => {
-            bgMusic.play().catch(err => console.log("Müzik hatası:", err));
+            bgMusic.play().catch(err => console.log("Müzik tetikleme hatası:", err));
             s1.classList.remove('active');
             s2.classList.add('active');
         });
@@ -195,16 +204,18 @@
             }, 1000);
         });
 
+        // Ready butonuna basınca konfetiler patlar
         readyBtn.addEventListener('click', () => {
             s4.classList.remove('active');
             s5.classList.add('active');
             
-            var duration = 5 * 1000;
+            // Güçlü ve sürekli konfeti yağmuru efekti
+            var duration = 6 * 1000;
             var end = Date.now() + duration;
 
             (function frame() {
-                confetti({ particleCount: 6, angle: 60, spread: 55, origin: { x: 0 } });
-                confetti({ particleCount: 6, angle: 120, spread: 55, origin: { x: 1 } });
+                confetti({ particleCount: 7, angle: 60, spread: 60, origin: { x: 0 } });
+                confetti({ particleCount: 7, angle: 120, spread: 60, origin: { x: 1 } });
 
                 if (Date.now() < end) {
                     requestAnimationFrame(frame);
